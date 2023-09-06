@@ -7,8 +7,10 @@ void main() {
   // networking.deleteAllData();
   // networking.postData("hello", false);
   // networking.postData();
-
+  // print("Main: ${networking.testPostData()}");
   // print(networking.fetchTodoItems());
+
+  print(networking.testFunction());
 
   runApp(const MyApp());
 }

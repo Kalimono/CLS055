@@ -83,8 +83,56 @@ class Networking {
     return '';
   }
 
+  String testFunction() {
+    String result = testPostData().toString();
+
+    return result;
+  }
+
+  Future<String> testPostData() async {
+    String? testString;
+
+    testString = await postData("TEST", false);
+
+    return testString;
+  }
+
+//   Future<String> testPostData() async {
+//   String? testString;
+
+//   testString = await postData("TEST", false);
+
+//   return testString;
+// }
+
+  // Future<String> testPostData() async {
+  //   String? testString;
+
+  //   testString = await postData("TEST", false);
+
+  //   postData("TEST", false).then((val) {
+  //     testString = val;
+
+  //     return testString;
+  //   });
+
+  //   return testString ?? '';
+  // }
+
+  // String testPostData() {
+  //   String? testString;
+
+  //   postData("TEST", false).then((val) {
+  //     testString = val;
+
+  //     return testString;
+  //   });
+
+  //   return testString ?? '';
+  // }
+
   void putData(ListItem listItem, bool? isChecked) async {
-    final String id = await listItem.id.toString();
+    final String id = listItem.id.toString();
     print("Updating item with id ${listItem.text} $id $isChecked");
     final url = Uri.parse(
         'https://todoapp-api.apps.k8s.gu.se/todos/$id?key=c035376f-b9b5-4542-953e-dbf69251dca3');
