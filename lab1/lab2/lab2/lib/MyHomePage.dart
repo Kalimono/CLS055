@@ -25,9 +25,10 @@ class _MyHomePageState extends State<MyHomePage> {
       final newItem = ListItem(
           text: text,
           isChecked: false,
-          id: networking.postData(text, false) as String);
+          id: networking.postData(text, false).toString());
       checkedStates[list.indexOf(newItem)] = false;
       // newItem.id = networking.postData(text, false) as String;
+      print("Adding item $newItem ${newItem.id}");
       list.add(newItem);
     });
   }
@@ -58,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       print("Updating checked state for index $index $isChecked");
       checkedStates[index] = isChecked;
-      networking.putData(list[index]);
+      networking.putData(list[index], checkedStates[index] ?? false);
     });
   }
 

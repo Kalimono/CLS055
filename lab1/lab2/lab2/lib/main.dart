@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'MyHomePage.dart';
-// import 'Networking.dart';
+import 'Networking.dart';
 
 void main() {
-  // Networking networking = Networking();
-
+  Networking networking = Networking();
+  // networking.deleteAllData();
   // networking.postData("hello", false);
   // networking.postData();
 
