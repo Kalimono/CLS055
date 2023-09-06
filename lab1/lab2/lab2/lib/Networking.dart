@@ -84,7 +84,9 @@ class Networking {
   }
 
   String testFunction() {
-    String result = testPostData().toString();
+    String result = testPostData() as String;
+
+    print("Later: $result");
 
     return result;
   }
@@ -93,6 +95,8 @@ class Networking {
     String? testString;
 
     testString = await postData("TEST", false);
+
+    print("Function: $testString");
 
     return testString;
   }
