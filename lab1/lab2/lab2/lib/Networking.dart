@@ -58,7 +58,7 @@ class Networking {
     // }
   }
 
-  Future<String> postData(String text, bool isChecked) async {
+  Future<String> postData(String text) async {
     final url = Uri.parse(
         'https://todoapp-api.apps.k8s.gu.se/todos?key=c035376f-b9b5-4542-953e-dbf69251dca3');
     final headers = {'Content-Type': 'application/json'};
@@ -66,12 +66,12 @@ class Networking {
     final response = await http.post(
       url,
       headers: headers,
-      body: jsonEncode({"title": text, "done": isChecked.toString()}),
+      body: jsonEncode({"title": text, "done": false}),
     );
 
     if (response.statusCode == 200) {
       print('POST request successful');
-      print('Response data: ${response.body}');
+      // print('Response data: ${response.body}');
 
       final List<dynamic> data = jsonDecode(response.body);
       return data.last['id'];
@@ -83,21 +83,30 @@ class Networking {
     return '';
   }
 
-  String testFunction() {
-    String result = '';
-    testPostData().then((value) => result);
-    return result;
+  // String testFunction() {
+  //   String result = testPostData() as String;
+
+  //   print("Later: $result");
+
+  //   return result;
+  // }
+
+  Future<String> testPostData(String text) {
+    // String testStringt;
+
+    return postData(text);
+
+    // print("Function: $testString");
+
+    // returnerFunction(testStringt);
+
+    // return testStringt;
   }
 
-  Future<String> testPostData() async {
-    String testString;
-
-    testString = await postData("TEST", false);
-
-    print("Function: $testString");
-
-    return testString;
-  }
+  // String returnerFunction(String testString) {
+  //   print("Returner: $testString");
+  //   return testString;
+  // }
 
 //   Future<String> testPostData() async {
 //   String? testString;

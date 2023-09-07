@@ -10,9 +10,7 @@ void main() {
   // print("Main: ${networking.testPostData()}");
   // print(networking.fetchTodoItems());
 
-  networking.testPostData().then((value) {
-    print("Main: $value");
-  });
+  // print("Main: $id");
 
   // print(networking.testFunction());
 

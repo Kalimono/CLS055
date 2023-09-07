@@ -22,14 +22,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void addItem(String text) {
     setState(() {
-      final newItem = ListItem(
-          text: text,
-          isChecked: false,
-          id: networking.postData(text, false).toString());
+      final newItem = ListItem(text: text, isChecked: false, id: '');
       checkedStates[list.indexOf(newItem)] = false;
-      // newItem.id = networking.postData(text, false) as String;
-      print("Adding item $newItem ${newItem.id}");
+
+      networking.testPostData(text).then((value) {
+        newItem.id = value;
+      });
       list.add(newItem);
+      print("Adding item ${newItem.text} ${newItem.id}");
     });
   }
 
@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               // builder: (context) => AddEventPage(addItemCallback: addItem),
-              builder: (context) => AddEventPage(),
+              builder: (context) => AddEventPage(addItemCallback: addItem),
             ),
           );
         },
