@@ -1,9 +1,9 @@
 // import 'package:flutter/material.dart';
 
 class ListItem {
-  final String text;
-  final bool isChecked;
-  late final String id;
+  String text;
+  bool isChecked;
+  String id;
 
   ListItem({
     required this.text,

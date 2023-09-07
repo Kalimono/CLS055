@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'Networking.dart';
 
 class AddEventPage extends StatefulWidget {
-  final Function(String) addItemCallback;
+  // final Function(String) addItemCallback;
 
-  const AddEventPage({required this.addItemCallback});
+  // const AddEventPage({required this.addItemCallback});
 
   @override
   State<AddEventPage> createState() => _AddEventPageState();
@@ -11,6 +12,7 @@ class AddEventPage extends StatefulWidget {
 
 class _AddEventPageState extends State<AddEventPage> {
   TextEditingController _controller = TextEditingController();
+  Networking networking = Networking();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,8 @@ class _AddEventPageState extends State<AddEventPage> {
                     primary: Colors.black,
                   ),
                   onPressed: () {
-                    widget.addItemCallback(_controller.text);
+                    // widget.addItemCallback(_controller.text);
+                    networking.postData(_controller.text, false);
                     Navigator.of(context).pop();
                   },
                   child: Row(

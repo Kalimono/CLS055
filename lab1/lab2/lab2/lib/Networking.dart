@@ -84,15 +84,13 @@ class Networking {
   }
 
   String testFunction() {
-    String result = testPostData() as String;
-
-    print("Later: $result");
-
+    String result = '';
+    testPostData().then((value) => result);
     return result;
   }
 
   Future<String> testPostData() async {
-    String? testString;
+    String testString;
 
     testString = await postData("TEST", false);
 

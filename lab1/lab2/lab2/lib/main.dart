@@ -10,7 +10,11 @@ void main() {
   // print("Main: ${networking.testPostData()}");
   // print(networking.fetchTodoItems());
 
-  print(networking.testFunction());
+  networking.testPostData().then((value) {
+    print("Main: $value");
+  });
+
+  // print(networking.testFunction());
 
   runApp(const MyApp());
 }

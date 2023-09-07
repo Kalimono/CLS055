@@ -136,7 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AddEventPage(addItemCallback: addItem),
+              // builder: (context) => AddEventPage(addItemCallback: addItem),
+              builder: (context) => AddEventPage(),
             ),
           );
         },
