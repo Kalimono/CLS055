@@ -12,7 +12,7 @@ class Networking {
         'https://todoapp-api.apps.k8s.gu.se/todos?key=c035376f-b9b5-4542-953e-dbf69251dca3'));
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonDataList = jsonDecode(response.body);
+      final List<dynamic> jsonDataList = await jsonDecode(response.body);
       // print(jsonDataList);
       // final List<ListItem> itemList = new List<ListItem>.empty(growable: true);
       // jsonDataList.map((jsonData) => ListItem.fromJson(jsonData)).toList();
@@ -71,7 +71,7 @@ class Networking {
 
     if (response.statusCode == 200) {
       print('POST request successful');
-      // print('Response data: ${response.body}');
+      print('Response data: ${response.body}');
 
       final List<dynamic> data = jsonDecode(response.body);
       return data.last['id'];

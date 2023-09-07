@@ -12,7 +12,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Networking networking = Networking();
 
-  List<ListItem> list = [];
+  List<dynamic> list = [];
+  List<dynamic> serverList = [];
 
   Map<int, bool> checkedStates = {};
 
@@ -20,7 +21,19 @@ class _MyHomePageState extends State<MyHomePage> {
   bool showDone = false;
   bool showUndone = false;
 
+  @override
+  void initState() {
+    print("initState");
+    super.initState();
+    networking.fetchTodoItems().then((value) {
+      setItemListFromServer(value);
+    });
+    // setItemListFromServer(networking.fetchTodoItems());
+  }
+
   void addItem(String text) {
+    print('server: $serverList');
+    print('list: $list');
     setState(() {
       final newItem = ListItem(text: text, isChecked: false, id: '');
       checkedStates[list.indexOf(newItem)] = false;
@@ -29,7 +42,12 @@ class _MyHomePageState extends State<MyHomePage> {
         newItem.id = value;
       });
       list.add(newItem);
-      print("Adding item ${newItem.text} ${newItem.id}");
+    });
+  }
+
+  void setItemListFromServer(List<dynamic> listFromServer) {
+    setState(() {
+      serverList = listFromServer;
     });
   }
 
@@ -55,6 +73,73 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // void AddListItemsFromServer(Future<List<dynamic>> serverItemList) async {
+  //   print('AddListItemsFromServer$serverItemList');
+  //   setListItems(serverItemList as List<dynamic>);
+  //   // .then((value) {
+  //   //   value);
+  //   // });
+  //   // setState(() {
+  //   //   for (int i = 0; i < serverItemList.length; i++) {
+  //   //     ListItem listItem = ListItem(
+  //   //         text: serverItemList[i]['text'],
+  //   //         isChecked: serverItemList[i]['isChecked'],
+  //   //         id: serverItemList[i]['id']);
+  //   //     list.add(listItem);
+  //   //     checkedStates[i] = listItem.isChecked;
+  //   //   }
+  //   // });
+  // }
+  // Future<void> getDataAndInitialize() async {
+  //   await getListItems();
+  //   // Now, perform other operations that rely on the fetched data
+  // }
+
+  // Future<void> getListItems() async {
+  //   await networking.fetchTodoItems().then((serverItemList) {
+  //     print('getListITems<$serverItemList');
+  //     setListItems(serverItemList);
+  //   });
+  //   // print(serverItemList);
+  //   // setListItems(serverItemList);
+  // }
+
+  void setListItems(List<dynamic> serverItemList) {
+    print('setiing server ListItems<');
+    setState(() {
+      for (int i = 0; i < serverItemList.length; i++) {
+        print(serverItemList[i]['text']);
+        ListItem listItem = ListItem(
+            text: serverItemList[i]['text'],
+            isChecked: serverItemList[i]['isChecked'],
+            id: serverItemList[i]['id']);
+        list.add(listItem);
+        checkedStates[i] = listItem.isChecked;
+      }
+    });
+  }
+
+  // networking.fetchTodoItems().then((serverItemList) {
+  //   print('getListITems<$serverItemList');
+  //   for (int i = 0; i < serverItemList.length; i++) {
+  //     print(serverItemList[i]['text']);
+  //     ListItem listItem = ListItem(
+  //         text: serverItemList[i]['text'],
+  //         isChecked: serverItemList[i]['isChecked'],
+  //         id: serverItemList[i]['id']);
+  //     list.add(listItem);
+  //     checkedStates[i] = listItem.isChecked;
+  //   }
+  // });
+  // for (int i = 0; i < list.length; i++) {
+  //   ListItem listItem = ListItem(
+  //       text: list[i]['text'],
+  //       isChecked: list[i]['isChecked'],
+  //       id: list[i]['id']);
+  //   this.list.add(listItem);
+  //   checkedStates[i] = listItem.isChecked;
+  // }
+
   void updateCheckedState(int index, bool isChecked) {
     setState(() {
       print("Updating checked state for index $index $isChecked");
@@ -63,8 +148,29 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void checkServerList() {
+    for (var serverItem in serverList) {
+      String id = serverItem['id'];
+
+      // Check if id exists in mylist
+      bool idExists = list.any((item) => item.id == id);
+
+      if (!idExists) {
+        // If id does not exist, create a new ListItem and add it to mylist
+        ListItem newItem = ListItem(
+          id: id,
+          text: serverItem['title'],
+          isChecked: serverItem['done'],
+        );
+
+        list.add(newItem);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkServerList();
     return Scaffold(
       appBar: AppBar(
         title: Text(
