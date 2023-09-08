@@ -81,7 +81,7 @@ class Networking {
     }
   }
 
-  void deleteData(String id) async {
+  Future<void> deleteData(String id) async {
     print("Deleting item with id $id");
     final url = Uri.parse(
         'https://todoapp-api.apps.k8s.gu.se/todos/$id?key=c035376f-b9b5-4542-953e-dbf69251dca3');

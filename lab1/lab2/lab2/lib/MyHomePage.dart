@@ -96,6 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void checkServerList() {
+    List<String> idsToRemove = [];
+
     for (var serverItem in serverList) {
       String id = serverItem['id'];
 
@@ -109,9 +111,24 @@ class _MyHomePageState extends State<MyHomePage> {
         );
 
         list.add(newItem);
+        idsToRemove.add(id);
       }
-      // serverList.remove(serverItem);
     }
+
+    // Remove items from serverList after the loop
+    serverList.removeWhere((item) => idsToRemove.contains(item['id']));
+  }
+
+  void deleteItemAndData(int index) {
+    final listItem = list[index];
+    final itemId = listItem.id;
+
+    networking.deleteData(itemId).then((_) {
+      setState(() {
+        list.removeAt(index);
+        checkedStates.remove(index);
+      });
+    });
   }
 
   @override
@@ -172,7 +189,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       IconButton(
                         alignment: Alignment.centerRight,
                         icon: Icon(Icons.close),
-                        onPressed: () {},
+                        onPressed: () {
+                          print("Deleting item with index $index");
+                          deleteItemAndData(index);
+                        },
                       ),
                     ],
                   ),
