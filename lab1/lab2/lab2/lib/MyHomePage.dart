@@ -17,13 +17,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Map<int, bool> checkedStates = {};
 
+  String selectedOption = 'all';
+
   bool showAll = true;
   bool showDone = false;
   bool showUndone = false;
 
   @override
   void initState() {
-    print("initState");
     super.initState();
     networking.fetchTodoItems().then((value) {
       setItemListFromServer(value);
@@ -144,8 +145,12 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           MyDropdownButton(
             onSelectOption: (selectedOption) {
-              updateFilters(selectedOption);
+              setState(() {
+                this.selectedOption = selectedOption;
+                updateFilters(selectedOption);
+              });
             },
+            selectedValue: selectedOption, // Pass the selected option
           )
         ],
       ),
@@ -162,11 +167,11 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 if (index > 0)
                   Divider(
-                    height: 1,
+                    height: 2, // Adjusted height
                     thickness: 2,
                   ),
-                Align(
-                  alignment: Alignment.centerLeft,
+                Container(
+                  padding: EdgeInsets.all(16), // Adjusted padding
                   child: Row(
                     children: [
                       Checkbox(
@@ -175,6 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           updateCheckedState(index, value ?? false);
                         },
                       ),
+                      SizedBox(width: 16), // Added spacing
                       Expanded(
                         child: Text(
                           listItem.text,
@@ -187,16 +193,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       IconButton(
-                        alignment: Alignment.centerRight,
                         icon: Icon(Icons.close),
                         onPressed: () {
-                          print("Deleting item with index $index");
                           deleteItemAndData(index);
                         },
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             );
           } else {

@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
-import 'Networking.dart';
 
 class AddEventPage extends StatefulWidget {
-  final Function(String) addItemCallback;
+  final void Function(String text) addItemCallback;
 
-  const AddEventPage({required this.addItemCallback});
+  AddEventPage({required this.addItemCallback});
 
   @override
-  State<AddEventPage> createState() => _AddEventPageState();
+  _AddEventPageState createState() => _AddEventPageState();
 }
 
 class _AddEventPageState extends State<AddEventPage> {
-  TextEditingController _controller = TextEditingController();
-  Networking networking = Networking();
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _textFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _textFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _textFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +37,29 @@ class _AddEventPageState extends State<AddEventPage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextField(
-              controller: _controller,
+              controller: _textEditingController,
+              focusNode: _textFocusNode,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(width: 2.0),
                 ),
-                contentPadding: EdgeInsets.all(10),
+                contentPadding: EdgeInsets.all(16), // Adjusted content padding
                 hintText: "Enter event name",
               ),
             ),
+            SizedBox(height: 16), // Added spacing
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -52,13 +68,13 @@ class _AddEventPageState extends State<AddEventPage> {
                     primary: Colors.black,
                   ),
                   onPressed: () {
-                    widget.addItemCallback(_controller.text);
-                    // networking.postData(_controller.text, false);
+                    widget.addItemCallback(_textEditingController.text);
                     Navigator.of(context).pop();
                   },
                   child: Row(
                     children: [
                       Icon(Icons.add),
+                      SizedBox(width: 8), // Added spacing
                       Text('Add'),
                     ],
                   ),
