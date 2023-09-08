@@ -9,8 +9,6 @@ class ListItem {
     required this.id,
   });
 
-  get getId => id;
-
   factory ListItem.fromJson(Map<String, dynamic> json) {
     return ListItem(
       text: json['title'],

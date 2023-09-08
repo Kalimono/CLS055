@@ -19,16 +19,6 @@ class Networking {
     }
   }
 
-  void deleteAllData() async {
-    List<dynamic> lista = await fetchTodoItems();
-
-    for (var item in lista) {
-      deleteData(item['id']);
-    }
-
-    // lista = await fetchTodoItems();
-  }
-
   Future<String> postData(String text) async {
     final url = Uri.parse(
         'https://todoapp-api.apps.k8s.gu.se/todos?key=c035376f-b9b5-4542-953e-dbf69251dca3');
@@ -54,18 +44,16 @@ class Networking {
     return '';
   }
 
-  Future<String> testPostData(String text) {
+  Future<String> postNewListItem(String text) {
     return postData(text);
   }
 
   void putData(ListItem listItem, bool? isChecked) async {
-    final String id = listItem.id.toString();
-    print("Updating item with id ${listItem.text} $id $isChecked");
     final url = Uri.parse(
-        'https://todoapp-api.apps.k8s.gu.se/todos/$id?key=c035376f-b9b5-4542-953e-dbf69251dca3');
+        'https://todoapp-api.apps.k8s.gu.se/todos/${listItem.id}?key=c035376f-b9b5-4542-953e-dbf69251dca3');
 
     final headers = {'Content-Type': 'application/json'};
-    print("Updating item with id ${listItem.text} $id $isChecked");
+
     final response = await http.put(
       url,
       headers: headers,
@@ -82,7 +70,6 @@ class Networking {
   }
 
   Future<void> deleteData(String id) async {
-    print("Deleting item with id $id");
     final url = Uri.parse(
         'https://todoapp-api.apps.k8s.gu.se/todos/$id?key=c035376f-b9b5-4542-953e-dbf69251dca3');
     final headers = {'Content-Type': 'application/json'};
@@ -99,6 +86,14 @@ class Networking {
       print(
           'Failed to make DELETE request. Status code: ${response.statusCode}');
       print('Response data: ${response.body}');
+    }
+  }
+
+  void deleteAllData() async {
+    List<dynamic> lista = await fetchTodoItems();
+
+    for (var item in lista) {
+      deleteData(item['id']);
     }
   }
 }

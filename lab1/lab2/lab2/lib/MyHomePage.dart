@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lab2/Networking.dart';
+import 'Networking.dart';
 import 'ListItem.dart';
 import 'AddEventPage.dart';
-import 'MyDropdownButton.dart';
+import 'CustomDropdownButton.dart';
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -32,13 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void addItem(String text) {
-    print('server: $serverList');
-    print('list: $list');
     setState(() {
       final newItem = ListItem(text: text, isChecked: false, id: '');
       checkedStates[list.indexOf(newItem)] = false;
-
-      networking.testPostData(text).then((value) {
+      networking.postNewListItem(text).then((value) {
         newItem.id = value;
       });
       list.add(newItem);
@@ -74,10 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void setListItems(List<dynamic> serverItemList) {
-    print('setiing server ListItems<');
     setState(() {
       for (int i = 0; i < serverItemList.length; i++) {
-        print(serverItemList[i]['text']);
         ListItem listItem = ListItem(
             text: serverItemList[i]['text'],
             isChecked: serverItemList[i]['isChecked'],
@@ -90,7 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateCheckedState(int index, bool isChecked) {
     setState(() {
-      print("Updating checked state for index $index $isChecked");
       checkedStates[index] = isChecked;
       networking.putData(list[index], checkedStates[index] ?? false);
     });
@@ -116,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    // Remove items from serverList after the loop
     serverList.removeWhere((item) => idsToRemove.contains(item['id']));
   }
 
@@ -137,20 +132,21 @@ class _MyHomePageState extends State<MyHomePage> {
     checkServerList();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "CLS055 TODO",
           textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24.0),
         ),
         centerTitle: true,
         actions: [
-          MyDropdownButton(
+          CustomDropdownButton(
             onSelectOption: (selectedOption) {
               setState(() {
                 this.selectedOption = selectedOption;
                 updateFilters(selectedOption);
               });
             },
-            selectedValue: selectedOption, // Pass the selected option
+            selectedValue: selectedOption,
           )
         ],
       ),
@@ -165,13 +161,8 @@ class _MyHomePageState extends State<MyHomePage> {
               (showUndone && !isChecked)) {
             return Column(
               children: <Widget>[
-                if (index > 0)
-                  Divider(
-                    height: 2, // Adjusted height
-                    thickness: 2,
-                  ),
                 Container(
-                  padding: EdgeInsets.all(16), // Adjusted padding
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Checkbox(
@@ -180,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           updateCheckedState(index, value ?? false);
                         },
                       ),
-                      SizedBox(width: 16), // Added spacing
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Text(
                           listItem.text,
@@ -193,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.close),
+                        icon: const Icon(Icons.close),
                         onPressed: () {
                           deleteItemAndData(index);
                         },
@@ -201,6 +192,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
+                const Divider(
+                  height: 2,
+                  thickness: 2,
+                )
               ],
             );
           } else {
@@ -216,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

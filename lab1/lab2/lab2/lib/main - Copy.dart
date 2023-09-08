@@ -95,11 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
               (showUndone && !listItem.isChecked)) {
             return Column(
               children: <Widget>[
-                if (index > 0)
-                  Divider(
-                    height: 1,
-                    thickness: 2,
-                  ),
                 ListTile(
                   title: ListItem(
                     text: listItem.text,
@@ -110,6 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                   ),
+                ),
+                Divider(
+                  height: 1,
+                  thickness: 2,
                 ),
               ],
             );

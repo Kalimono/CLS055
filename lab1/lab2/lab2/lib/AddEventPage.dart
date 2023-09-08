@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AddEventPage extends StatefulWidget {
   final void Function(String text) addItemCallback;
 
-  AddEventPage({required this.addItemCallback});
+  const AddEventPage({super.key, required this.addItemCallback});
 
   @override
   _AddEventPageState createState() => _AddEventPageState();
@@ -16,7 +16,9 @@ class _AddEventPageState extends State<AddEventPage> {
   @override
   void initState() {
     super.initState();
-    _textFocusNode.requestFocus();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _textFocusNode.requestFocus();
+    });
   }
 
   @override
@@ -30,13 +32,14 @@ class _AddEventPageState extends State<AddEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "CLS055 TODO",
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          iconSize: 32.0,
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -50,31 +53,31 @@ class _AddEventPageState extends State<AddEventPage> {
             TextField(
               controller: _textEditingController,
               focusNode: _textFocusNode,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(width: 2.0),
                 ),
-                contentPadding: EdgeInsets.all(16), // Adjusted content padding
+                contentPadding: EdgeInsets.all(16),
                 hintText: "Enter event name",
               ),
             ),
-            SizedBox(height: 16), // Added spacing
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
                   style: TextButton.styleFrom(
-                    primary: Colors.black,
+                    foregroundColor: Colors.black,
                   ),
                   onPressed: () {
                     widget.addItemCallback(_textEditingController.text);
                     Navigator.of(context).pop();
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(Icons.add),
-                      SizedBox(width: 8), // Added spacing
+                      SizedBox(width: 8),
                       Text('Add'),
                     ],
                   ),

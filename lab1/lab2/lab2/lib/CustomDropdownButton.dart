@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-class MyDropdownButton extends StatefulWidget {
+class CustomDropdownButton extends StatefulWidget {
   final ValueChanged<String> onSelectOption;
-  final String selectedValue; // Pass the currently selected value
+  final String selectedValue;
 
-  MyDropdownButton({
+  const CustomDropdownButton({
+    super.key,
     required this.onSelectOption,
-    required this.selectedValue, // Add the selected value as a parameter
+    required this.selectedValue,
   });
 
   @override
-  _MyDropdownButtonState createState() => _MyDropdownButtonState();
+  _CustomDropdownButtonState createState() => _CustomDropdownButtonState();
 }
 
-class _MyDropdownButtonState extends State<MyDropdownButton> {
+class _CustomDropdownButtonState extends State<CustomDropdownButton> {
   List<String> list = <String>['all', 'done', 'undone'];
 
   @override
@@ -22,19 +23,23 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
       icon: Icon(
         Icons.more_vert,
         color: Colors.black,
+        size: 32.0,
       ),
       itemBuilder: (BuildContext context) {
         return list.map((String value) {
           return PopupMenuItem<String>(
             value: value,
-            child: Text(value),
+            child: Padding(
+              // Add padding to the child
+              padding: const EdgeInsets.all(16.0),
+              child: Text(value),
+            ),
           );
         }).toList();
       },
       onSelected: (String value) {
         widget.onSelectOption(value);
       },
-      // Specify the selected value here
       initialValue: widget.selectedValue,
     );
   }
