@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:lab2/ListItem.dart';
 
@@ -13,9 +12,6 @@ class Networking {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonDataList = await jsonDecode(response.body);
-      // print(jsonDataList);
-      // final List<ListItem> itemList = new List<ListItem>.empty(growable: true);
-      // jsonDataList.map((jsonData) => ListItem.fromJson(jsonData)).toList();
 
       return jsonDataList;
     } else {
@@ -30,32 +26,7 @@ class Networking {
       deleteData(item['id']);
     }
 
-    lista = await fetchTodoItems();
-
-    for (var item in lista) {
-      print(item['id']);
-    }
-
-    // final items = fetchTodoItems();
-    // printTodoItems(items as List<ListItem>);
-
-    // final url = Uri.parse(
-    //     'https://todoapp-api.apps.k8s.gu.se/todos?key=c035376f-b9b5-4542-953e-dbf69251dca3');
-    // final headers = {'Content-Type': 'application/json'};
-
-    // final response = await http.delete(
-    //   url,
-    //   headers: headers,
-    // );
-
-    // if (response.statusCode == 200) {
-    //   print('DELETE request successful');
-    //   print('Response data: ${response.body}');
-    // } else {
-    //   print(
-    //       'Failed to make DELETE request. Status code: ${response.statusCode}');
-    //   print('Response data: ${response.body}');
-    // }
+    // lista = await fetchTodoItems();
   }
 
   Future<String> postData(String text) async {
@@ -83,64 +54,9 @@ class Networking {
     return '';
   }
 
-  // String testFunction() {
-  //   String result = testPostData() as String;
-
-  //   print("Later: $result");
-
-  //   return result;
-  // }
-
   Future<String> testPostData(String text) {
-    // String testStringt;
-
     return postData(text);
-
-    // print("Function: $testString");
-
-    // returnerFunction(testStringt);
-
-    // return testStringt;
   }
-
-  // String returnerFunction(String testString) {
-  //   print("Returner: $testString");
-  //   return testString;
-  // }
-
-//   Future<String> testPostData() async {
-//   String? testString;
-
-//   testString = await postData("TEST", false);
-
-//   return testString;
-// }
-
-  // Future<String> testPostData() async {
-  //   String? testString;
-
-  //   testString = await postData("TEST", false);
-
-  //   postData("TEST", false).then((val) {
-  //     testString = val;
-
-  //     return testString;
-  //   });
-
-  //   return testString ?? '';
-  // }
-
-  // String testPostData() {
-  //   String? testString;
-
-  //   postData("TEST", false).then((val) {
-  //     testString = val;
-
-  //     return testString;
-  //   });
-
-  //   return testString ?? '';
-  // }
 
   void putData(ListItem listItem, bool? isChecked) async {
     final String id = listItem.id.toString();
